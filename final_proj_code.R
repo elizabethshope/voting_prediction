@@ -357,6 +357,6 @@ mean(y_preds_glm == voters_test$voted_clinton)
 table(voters_test$voted_clinton, y_preds_glm)
 
 # Look at estimated coefficients with 95% confidence intervals
-round(cbind(coef(summary(fit))[,c(1)],
-            coef(summary(fit))[,c(1)] - 1.96*coef(summary(fit))[,c(2)], 
+round(cbind(coef(summary(fit))[,c(1)] - 1.96*coef(summary(fit))[,c(2)], 
+            coef(summary(fit))[,c(1)],
             coef(summary(fit))[,c(1)] + 1.96*coef(summary(fit))[,c(2)]), 3)
