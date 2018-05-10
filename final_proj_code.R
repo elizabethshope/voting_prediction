@@ -5,8 +5,8 @@ library(mcmcplots)
 # Read in data
 voters <- read.csv("processed_voter_data.csv", header = TRUE)
 
-# Remove superfluous variables (faminc_didnotsay, pid_other, 
-# employment_other, marstat_other, educ_nocollege)
+# Remove superfluous variables which will serve as the baseline 
+# (faminc_didnotsay, pid_other, employment_other, marstat_other, educ_nocollege)
 voters <- voters[,-c(2, 8, 11, 16, 19)]
 
 # Separate into test set and training set
