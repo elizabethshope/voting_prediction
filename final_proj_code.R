@@ -38,15 +38,6 @@ set.seed(3924)
 # Sample beta from normal approximation to the posterior
 beta	<- rmvnorm(B, mean = bhat, sigma = vbeta)
 
-# Perform visual diagnostics for convergence on beta0 and beta7
-beta0 <- as.matrix(beta[,1])
-colnames(beta0) <- 'beta[0]'
-mcmcplot1(beta0, greek = TRUE)
-
-beta7 <- as.matrix(beta[,8])
-colnames(beta7) <- 'beta[7]'
-mcmcplot1(beta7, greek = TRUE)
-
 # Compute mean of simulated betas
 mean_beta <- as.matrix(apply(beta, 2, mean))
 mean_beta
@@ -91,11 +82,11 @@ sample_beta <- function(seed, tau, B) {
   beta		<- matrix(0, nrow = B, ncol = ncol(X))
   ar			<- vector('numeric', length = B)
   
-  # Set initial value of beta
-  beta[1,]	<- bhat
-  
   # Set seed 
   set.seed(seed)
+  
+  # Set initial value of beta
+  beta[1,]	<- rmvnorm(1, mean = bhat, sigma = vbeta)
   
   # Metropolis loop
   for(t in 2:B){
@@ -139,30 +130,50 @@ allChains <- mcmc.list(list(chain1, chain2, chain3, chain4))
 gelman.diag(allChains)
 
 # Create function to get lag 1 ACF values for a given thinning level
-get_lag1 <- function(beta, thinning_level) {
+get_acf <- function(beta, thinning_level, lag) {
   thinned_beta <- beta[seq(from = B/2+1, to = B, by = thinning_level),]
   lags <- acf(thinned_beta, plot = FALSE)$acf
   lag1_vals <- vector('numeric', length = 15)
   for (i in 1:15) {
-    lag1_vals[i] <- lags[, , i][2,i]
+    lagi <- acf(thinned_beta[,i], plot = FALSE)$acf
+    lag1_vals[i] <- lagi[, , 1][lag + 1]
   }
   return(lag1_vals)
 }
 
 # Plot histograms of Lag 1 ACF with different thinning levels
+pdf("lag1_mh_flat.pdf")
 par(mfrow = c(3,2))
-hist(get_lag1(r1$beta, 1), main = "Histogram of Lag 1 ACF No Thinning",
+hist(get_acf(r1$beta, 1, 1), main = "Histogram of Lag 1 ACF No Thinning",
      xlab = "Lag 1 ACF")
-hist(get_lag1(r1$beta, 5), main = "Histogram of Lag 1 ACF Thin by 5",
+hist(get_acf(r1$beta, 5, 1), main = "Histogram of Lag 1 ACF Thin by 5",
      xlab = "Lag 1 ACF")
-hist(get_lag1(r1$beta, 10), main = "Histogram of Lag 1 ACF Thin by 10",
+hist(get_acf(r1$beta, 10, 1), main = "Histogram of Lag 1 ACF Thin by 10",
      xlab = "Lag 1 ACF")
-hist(get_lag1(r1$beta, 20), main = "Histogram of Lag 1 ACF Thin by 20",
+hist(get_acf(r1$beta, 20, 1), main = "Histogram of Lag 1 ACF Thin by 20",
      xlab = "Lag 1 ACF")
-hist(get_lag1(r1$beta, 40), main = "Histogram of Lag 1 ACF Thin by 40",
+hist(get_acf(r1$beta, 40, 1), main = "Histogram of Lag 1 ACF Thin by 40",
      xlab = "Lag 1 ACF")
-hist(get_lag1(r1$beta, 50), main = "Histogram of Lag 1 ACF Thin by 50",
+hist(get_acf(r1$beta, 50, 1), main = "Histogram of Lag 1 ACF Thin by 50",
      xlab = "Lag 1 ACF")
+dev.off()
+
+# Plot histograms of Lag 2 ACF with different thinning levels
+pdf("lag2_mh_flat.pdf")
+par(mfrow = c(3,2))
+hist(get_acf(r1$beta, 1, 2), main = "Histogram of Lag 1 ACF No Thinning",
+     xlab = "Lag 1 ACF")
+hist(get_acf(r1$beta, 5, 2), main = "Histogram of Lag 1 ACF Thin by 5",
+     xlab = "Lag 1 ACF")
+hist(get_acf(r1$beta, 10, 2), main = "Histogram of Lag 1 ACF Thin by 10",
+     xlab = "Lag 1 ACF")
+hist(get_acf(r1$beta, 20, 2), main = "Histogram of Lag 1 ACF Thin by 20",
+     xlab = "Lag 1 ACF")
+hist(get_acf(r1$beta, 40, 2), main = "Histogram of Lag 1 ACF Thin by 40",
+     xlab = "Lag 1 ACF")
+hist(get_acf(r1$beta, 50, 2), main = "Histogram of Lag 1 ACF Thin by 50",
+     xlab = "Lag 1 ACF")
+dev.off()
 
 # Find mean of thinned beta
 thinned_beta <- rbind(r1$beta[seq(from = B/2+1, to = B, by = 50),], 
@@ -219,11 +230,11 @@ sample_beta2 <- function(seed, tau, B) {
   beta		<- matrix(0, nrow = B, ncol = ncol(X))
   ar			<- vector('numeric', length = B)
   
-  # Set initial value of beta
-  beta[1,]	<- bhat
-  
   # Set seed 
   set.seed(seed)
+  
+  # Set initial value of beta
+  beta[1,]	<- rmvnorm(1, mean = bhat, sigma = vbeta)
   
   # Metropolis loop
   for(t in 2:B){
@@ -267,19 +278,38 @@ allChains <- mcmc.list(list(chain5, chain6, chain7, chain8))
 gelman.diag(allChains)
 
 # Plot histograms of Lag 1 ACF with different thinning levels
+pdf("lag1_mh_mvn.pdf")
 par(mfrow = c(3,2))
-hist(get_lag1(r5$beta, 1), main = "Histogram of Lag 1 ACF No Thinning",
+hist(get_acf(r5$beta, 1, 1), main = "Histogram of Lag 1 ACF No Thinning",
      xlab = "Lag 1 ACF")
-hist(get_lag1(r5$beta, 5), main = "Histogram of Lag 1 ACF Thin by 5",
+hist(get_acf(r5$beta, 5, 1), main = "Histogram of Lag 1 ACF Thin by 5",
      xlab = "Lag 1 ACF")
-hist(get_lag1(r5$beta, 10), main = "Histogram of Lag 1 ACF Thin by 10",
+hist(get_acf(r5$beta, 10, 1), main = "Histogram of Lag 1 ACF Thin by 10",
      xlab = "Lag 1 ACF")
-hist(get_lag1(r5$beta, 20), main = "Histogram of Lag 1 ACF Thin by 20",
+hist(get_acf(r5$beta, 20, 1), main = "Histogram of Lag 1 ACF Thin by 20",
      xlab = "Lag 1 ACF")
-hist(get_lag1(r5$beta, 40), main = "Histogram of Lag 1 ACF Thin by 40",
+hist(get_acf(r5$beta, 40, 1), main = "Histogram of Lag 1 ACF Thin by 40",
      xlab = "Lag 1 ACF")
-hist(get_lag1(r5$beta, 50), main = "Histogram of Lag 1 ACF Thin by 50",
+hist(get_acf(r5$beta, 50, 1), main = "Histogram of Lag 1 ACF Thin by 50",
      xlab = "Lag 1 ACF")
+dev.off()
+
+# Plot histograms of Lag 2 ACF with different thinning levels
+pdf("lag2_mh_mvn.pdf")
+par(mfrow = c(3,2))
+hist(get_acf(r5$beta, 1, 2), main = "Histogram of Lag 1 ACF No Thinning",
+     xlab = "Lag 1 ACF")
+hist(get_acf(r5$beta, 5, 2), main = "Histogram of Lag 1 ACF Thin by 5",
+     xlab = "Lag 1 ACF")
+hist(get_acf(r5$beta, 10, 2), main = "Histogram of Lag 1 ACF Thin by 10",
+     xlab = "Lag 1 ACF")
+hist(get_acf(r5$beta, 20, 2), main = "Histogram of Lag 1 ACF Thin by 20",
+     xlab = "Lag 1 ACF")
+hist(get_acf(r5$beta, 40, 2), main = "Histogram of Lag 1 ACF Thin by 40",
+     xlab = "Lag 1 ACF")
+hist(get_acf(r5$beta, 50, 2), main = "Histogram of Lag 1 ACF Thin by 50",
+     xlab = "Lag 1 ACF")
+dev.off()
 
 # Find mean of thinned beta
 thinned_beta <- rbind(r5$beta[seq(from = B/2+1, to = B, by = 50),], 
