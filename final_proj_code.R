@@ -40,7 +40,7 @@ beta	<- rmvnorm(B, mean = bhat, sigma = vbeta)
 
 # Compute mean of simulated betas
 mean_beta <- as.matrix(apply(beta, 2, mean))
-mean_beta
+round(mean_beta, 3)
 
 # First find X_test * mean_beta
 Xb <- as.matrix(X_test) %*% mean_beta
@@ -181,7 +181,7 @@ thinned_beta <- rbind(r1$beta[seq(from = B/2+1, to = B, by = 50),],
                       r3$beta[seq(from = B/2+1, to = B, by = 50),],
                       r4$beta[seq(from = B/2+1, to = B, by = 50),])
 mean_beta <- as.matrix(apply(thinned_beta, 2, mean))
-mean_beta
+round(mean_beta, 3)
 
 # Make predictions on test set
 # First find X_test * mean_beta
@@ -317,7 +317,7 @@ thinned_beta <- rbind(r5$beta[seq(from = B/2+1, to = B, by = 50),],
                       r7$beta[seq(from = B/2+1, to = B, by = 50),],
                       r8$beta[seq(from = B/2+1, to = B, by = 50),])
 mean_beta <- as.matrix(apply(thinned_beta, 2, mean))
-mean_beta
+round(mean_beta, 3)
 
 # Make predictions on test set
 # First find X_test * mean_beta
