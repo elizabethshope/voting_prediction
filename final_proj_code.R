@@ -161,18 +161,18 @@ dev.off()
 # Plot histograms of Lag 2 ACF with different thinning levels
 pdf("lag2_mh_flat.pdf")
 par(mfrow = c(3,2))
-hist(get_acf(r1$beta, 1, 2), main = "Histogram of Lag 1 ACF No Thinning",
-     xlab = "Lag 1 ACF")
-hist(get_acf(r1$beta, 5, 2), main = "Histogram of Lag 1 ACF Thin by 5",
-     xlab = "Lag 1 ACF")
-hist(get_acf(r1$beta, 10, 2), main = "Histogram of Lag 1 ACF Thin by 10",
-     xlab = "Lag 1 ACF")
-hist(get_acf(r1$beta, 20, 2), main = "Histogram of Lag 1 ACF Thin by 20",
-     xlab = "Lag 1 ACF")
-hist(get_acf(r1$beta, 40, 2), main = "Histogram of Lag 1 ACF Thin by 40",
-     xlab = "Lag 1 ACF")
-hist(get_acf(r1$beta, 50, 2), main = "Histogram of Lag 1 ACF Thin by 50",
-     xlab = "Lag 1 ACF")
+hist(get_acf(r1$beta, 1, 2), main = "Histogram of Lag 2 ACF No Thinning",
+     xlab = "Lag 2 ACF")
+hist(get_acf(r1$beta, 5, 2), main = "Histogram of Lag 2 ACF Thin by 5",
+     xlab = "Lag 2 ACF")
+hist(get_acf(r1$beta, 10, 2), main = "Histogram of Lag 2 ACF Thin by 10",
+     xlab = "Lag 2 ACF")
+hist(get_acf(r1$beta, 20, 2), main = "Histogram of Lag 2 ACF Thin by 20",
+     xlab = "Lag 2 ACF")
+hist(get_acf(r1$beta, 40, 2), main = "Histogram of Lag 2 ACF Thin by 40",
+     xlab = "Lag 2 ACF")
+hist(get_acf(r1$beta, 50, 2), main = "Histogram of Lag 2 ACF Thin by 50",
+     xlab = "Lag 2 ACF")
 dev.off()
 
 # Find mean of thinned beta
@@ -297,18 +297,18 @@ dev.off()
 # Plot histograms of Lag 2 ACF with different thinning levels
 pdf("lag2_mh_mvn.pdf")
 par(mfrow = c(3,2))
-hist(get_acf(r5$beta, 1, 2), main = "Histogram of Lag 1 ACF No Thinning",
-     xlab = "Lag 1 ACF")
-hist(get_acf(r5$beta, 5, 2), main = "Histogram of Lag 1 ACF Thin by 5",
-     xlab = "Lag 1 ACF")
-hist(get_acf(r5$beta, 10, 2), main = "Histogram of Lag 1 ACF Thin by 10",
-     xlab = "Lag 1 ACF")
-hist(get_acf(r5$beta, 20, 2), main = "Histogram of Lag 1 ACF Thin by 20",
-     xlab = "Lag 1 ACF")
-hist(get_acf(r5$beta, 40, 2), main = "Histogram of Lag 1 ACF Thin by 40",
-     xlab = "Lag 1 ACF")
-hist(get_acf(r5$beta, 50, 2), main = "Histogram of Lag 1 ACF Thin by 50",
-     xlab = "Lag 1 ACF")
+hist(get_acf(r5$beta, 1, 2), main = "Histogram of Lag 2 ACF No Thinning",
+     xlab = "Lag 2 ACF")
+hist(get_acf(r5$beta, 5, 2), main = "Histogram of Lag 2 ACF Thin by 5",
+     xlab = "Lag 2 ACF")
+hist(get_acf(r5$beta, 10, 2), main = "Histogram of Lag 2 ACF Thin by 10",
+     xlab = "Lag 2 ACF")
+hist(get_acf(r5$beta, 20, 2), main = "Histogram of Lag 2 ACF Thin by 20",
+     xlab = "Lag 2 ACF")
+hist(get_acf(r5$beta, 40, 2), main = "Histogram of Lag 2 ACF Thin by 40",
+     xlab = "Lag 2 ACF")
+hist(get_acf(r5$beta, 50, 2), main = "Histogram of Lag 2 ACF Thin by 50",
+     xlab = "Lag 2 ACF")
 dev.off()
 
 # Find mean of thinned beta
